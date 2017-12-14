@@ -3,6 +3,9 @@ import unittest
 from sqlToCypherConverter.Converter import Converter
 
 
+# noinspection SqlNoDataSourceInspection
 class ConverterTest(unittest.TestCase):
     def test_convert(self):
-        self.assertEqual("some sql", Converter().convert("some sql"))
+        result = Converter().convert("./../resources/insertInto.sql")
+        expected = "INSERT INTO studenten(MatrNr, Name, Semester) \n"
+        self.assertEqual(expected, result)
