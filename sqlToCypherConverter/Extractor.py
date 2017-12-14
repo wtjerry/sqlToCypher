@@ -49,8 +49,17 @@ class Extractor(object):
         column_values = []
         for cv in column_values_string.split(','):
             x = cv.strip()
-            if x.isdigit():
+            if x.isnumeric():
                 column_values.append(int(x))
+            elif self._is_float(x):
+                column_values.append(float(x))
             else:
                 column_values.append(x[1:-1])
         return column_values
+
+    def _is_float(self, s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
