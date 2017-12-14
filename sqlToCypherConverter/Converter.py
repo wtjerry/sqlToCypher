@@ -19,7 +19,7 @@ class Converter(object):
                 columns = extractor.extract_columns()
                 cypher_statement = self._create_statement(table_name, columns)
                 result.append(cypher_statement)
-        return result
+        return "\n".join(result)
 
     def _create_statement(self, table_name, columns):
         formatted_columns = []
