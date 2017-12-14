@@ -7,5 +7,5 @@ from sqlToCypherConverter.Converter import Converter
 class ConverterTest(unittest.TestCase):
     def test_convert(self):
         result = Converter().convert("./../resources/insertInto.sql")
-        expected = "INSERT INTO studenten(MatrNr, Name, Semester) \n"
+        expected = "CREATE (:STUDENTEN)"
         self.assertEqual(expected, result)
