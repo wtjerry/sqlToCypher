@@ -9,8 +9,7 @@ class ExtractorTest(unittest.TestCase):
         self.assertEqual("studenten", actual)
 
     def test_extract_columns(self):
-        columns = Extractor("INSERT INTO studenten(MatrNr, Name, Semester)").extract_columns()
-
-        expected = ["MatrNr", "Name", "Semester"]
-
-        self.assertSequenceEqual(expected, columns)
+        columns = Extractor("INSERT INTO studenten(MatrNr, Name, Semester)\nVALUES (24002, 'Xenokrates', 18);")\
+            .extract_columns()
+        expected = {'MatrNr': 24002, 'Name': "Xenokrates", 'Semester': 18}
+        self.assertDictEqual(expected, columns)

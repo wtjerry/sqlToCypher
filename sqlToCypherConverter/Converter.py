@@ -6,21 +6,28 @@ class Converter(object):
 
     def convert(self, sql):
         with open(sql) as f:
-            lines = f.readlines()
-            result = self.to_create_statement(lines)
-        return "\n".join(result)
+            s = "".join(f.readlines())
+            result = self.to_create_statement(s)
+        return "".join(result)
 
-    def to_create_statement(self, lines):
+    def to_create_statement(self, s):
         result = []
-        for line in lines:
-            if INSERT_INTO_STATEMENT in line.lower():
-                extractor = Extractor(line)
+        for sql_statement in s.split(";"):
+            if INSERT_INTO_STATEMENT in sql_statement.lower():
+                extractor = Extractor(sql_statement)
                 table_name = extractor.extract_table()
                 columns = extractor.extract_columns()
-                statement = self._create_statement(table_name, columns)
-                result.append(statement)
+                cypher_statement = self._create_statement(table_name, columns)
+                result.append(cypher_statement)
         return result
 
     def _create_statement(self, table_name, columns):
-        columns_comma_separated = ", ".join(columns)
-        return "CREATE (:{0} {{{1}}})".format(table_name.upper(), columns_comma_separated)
+        formatted_columns = []
+        for k, v in columns.items():
+            if isinstance(v, str):
+                formatted_columns.append("{0}: '{1}'".format(k, v))
+            else:
+                formatted_columns.append("{0}: {1}".format(k, v))
+
+        columns_string = ", ".join(formatted_columns)
+        return "CREATE (:{0} {{{1}}})".format(table_name.upper(), columns_string)
