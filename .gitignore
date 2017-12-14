@@ -1,0 +1,9 @@
+# python bytecode files
+*.pyc
+__pycache__/
+
+# test files
+.cache/
+
+# pycharm
+.idea/
