@@ -17,7 +17,8 @@ class Converter(object):
                 extractor = Extractor(sql_statement)
                 table_name = extractor.extract_table()
                 columns = extractor.extract_columns()
-                cypher_statement = self._create_statement(table_name, columns)
+                identifier = self._get_identifier_name(table_name, tables_to_convert)
+                cypher_statement = self._create_statement(table_name, identifier, columns)
                 result.append(cypher_statement)
         return "\n".join(result)
 
@@ -25,11 +26,12 @@ class Converter(object):
         return INSERT_INTO_STATEMENT in sql_statement.lower()
 
     def _should_convert(self, sql_statement, tables_to_convert):
-        if not tables_to_convert:
-            return True
         return any(x in sql_statement for x in tables_to_convert)
 
-    def _create_statement(self, table_name, columns):
+    def _get_identifier_name(self, table_name, tables_to_convert):
+        return tables_to_convert[table_name]
+
+    def _create_statement(self, table_name, identifier_name, columns):
         formatted_columns = []
         for k, v in columns.items():
             if isinstance(v, str):
@@ -37,5 +39,7 @@ class Converter(object):
             else:
                 formatted_columns.append("{0}: {1}".format(k, v))
 
+        identifier_value = columns[identifier_name]
+
         columns_string = ", ".join(formatted_columns)
-        return "CREATE (:{0} {{{1}}})".format(table_name.upper(), columns_string)
+        return "CREATE ({0}:{1} {{{2}}})".format(identifier_value, table_name.upper(), columns_string)
