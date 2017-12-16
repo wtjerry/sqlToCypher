@@ -21,6 +21,9 @@ class InsertIntoStatementConverter(object):
         cypher_statement = self._create_relationship_statement(table_name, from_node_id, to_node_id)
         return cypher_statement
 
+    def to_special_relationship(self, sql_statement, special_relationship_tables):
+        return "CREATE (_) - [:] -> (_)"
+
     def _get_identifier_name(self, table_name, tables_to_convert):
         return tables_to_convert[table_name]
 
