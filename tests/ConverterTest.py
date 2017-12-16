@@ -12,7 +12,7 @@ class ConverterTest(unittest.TestCase):
     def test_convert_existingTableProvided_convertsThatTable(self):
         tables_to_converttables_to_convert_to_nodes = {'studenten': "MatrNr"}
         result = Converter().convert("./../resources/insertInto.sql", tables_to_converttables_to_convert_to_nodes, {})
-        expected = "CREATE (24002:STUDENTEN {MatrNr: 24002, Name: 'Xenokrates', Semester: 18})"
+        expected = "CREATE (_24002:STUDENTEN {MatrNr: 24002, Name: 'Xenokrates', Semester: 18})"
         self.assertEqual(expected, result)
 
     def test_convert_notExistingTableProvided_returnsNothing(self):
@@ -30,9 +30,9 @@ class ConverterTest(unittest.TestCase):
         }
         result = Converter()\
             .convert("./../resources/insertInto_with_relationshipTable.sql", tables_to_convert_to_nodes, relationship_tables)
-        expected = "CREATE (5001:VORLESUNGEN {VorlNr: 5001, Titel: 'Grundzuege', SWS: 4, gelesenVon: 2137})" \
+        expected = "CREATE (_5001:VORLESUNGEN {VorlNr: 5001, Titel: 'Grundzuege', SWS: 4, gelesenVon: 2137})" \
                    + "\n" \
-                   + "CREATE (5041:VORLESUNGEN {VorlNr: 5041, Titel: 'Ethik', SWS: 4, gelesenVon: 2125})" \
+                   + "CREATE (_5041:VORLESUNGEN {VorlNr: 5041, Titel: 'Ethik', SWS: 4, gelesenVon: 2125})" \
                    + "\n" \
-                   + "CREATE (5041) - [:VORAUSSETZEN] -> (5001)"
+                   + "CREATE (_5041) - [:VORAUSSETZEN] -> (_5001)"
         self.assertEqual(expected, result)
