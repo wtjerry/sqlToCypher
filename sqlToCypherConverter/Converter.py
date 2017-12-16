@@ -33,7 +33,7 @@ class Converter(object):
                     cypher_statements.append(cypher_statement)
                     if any(x in sql_statement for x in special_relationship_tables):
                         cypher_statement = InsertIntoStatementConverter()\
-                            .to_special_relationship(sql_statement, special_relationship_tables)
+                            .to_relationship(sql_statement, special_relationship_tables)
                         cypher_statements.append(cypher_statement)
                 elif any(x in sql_statement for x in relationship_tables.keys()):
                     cypher_statement = InsertIntoStatementConverter()\

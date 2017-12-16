@@ -29,7 +29,8 @@ class ConverterTest(unittest.TestCase):
         relationship_tables = {
             'voraussetzen': {
                 'from': "Nachfolger",
-                'to': "Vorgänger"
+                'to': "Vorgänger",
+                'name': "setzt_voraus"
             }
         }
         result = Converter().convert(
@@ -41,7 +42,7 @@ class ConverterTest(unittest.TestCase):
                    + "\n" \
                    + "CREATE (_5041:VORLESUNGEN {VorlNr: 5041, Titel: 'Ethik', SWS: 4, gelesenVon: 2125})" \
                    + "\n" \
-                   + "CREATE (_5041) - [:VORAUSSETZEN] -> (_5001)"
+                   + "CREATE (_5041) - [:SETZT_VORAUS] -> (_5001)"
         self.assertEqual(expected, result)
 
     def test_convert_existingTableANDspecialRelationshipTableProvided_dummyRelationship(self):

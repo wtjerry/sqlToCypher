@@ -4,11 +4,13 @@ if __name__ == "__main__":
     relationship_tables = {
         'voraussetzen': {
             'from': "Nachfolger",
-            'to': "Vorgänger"
+            'to': "Vorgänger",
+            'name': "setzt_voraus"
         },
         'hoeren': {
             'from': "MatrNr",
-            'to': "VorlNr"
+            'to': "VorlNr",
+            'name': "hoert"
         }
     }
     tables_to_convert = {
