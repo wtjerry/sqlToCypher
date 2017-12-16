@@ -31,9 +31,9 @@ class InsertIntoStatementConverter(object):
         formatted_columns = []
         for k, v in columns.items():
             if isinstance(v, str):
-                formatted_columns.append("{0}: '{1}'".format(k, v))
+                formatted_columns.append("{0}: '{1}'".format(k.lower(), v))
             else:
-                formatted_columns.append("{0}: {1}".format(k, v))
+                formatted_columns.append("{0}: {1}".format(k.lower(), v))
 
         identifier_value = columns[identifier_name]
 
