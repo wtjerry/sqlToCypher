@@ -38,7 +38,7 @@ class InsertIntoStatementConverter(object):
         identifier_value = columns[identifier_name]
 
         columns_string = ", ".join(formatted_columns)
-        return "CREATE (_{0}:{1} {{{2}}})".format(identifier_value, table_name.upper(), columns_string)
+        return "CREATE (_{0}:{1} {{{2}}})".format(identifier_value, table_name, columns_string)
 
     def _create_relationship_statement(self, table_name, from_node_id, to_node_id):
         return "CREATE (_{0}) - [:{1}] -> (_{2})".format(from_node_id, table_name.upper(), to_node_id)

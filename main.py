@@ -4,15 +4,15 @@ if __name__ == "__main__":
     tables_to_convert_to_nodes = {
         'studenten': {
             'id_attribute': "MatrNr",
-            'name': 'student'
+            'name': 'Student'
         },
         'professoren': {
             'id_attribute': "PersNr",
-            'name': 'professor'
+            'name': 'Professor'
         },
         'vorlesungen': {
             'id_attribute': "VorlNr",
-            'name': 'vorlesung'
+            'name': 'Vorlesung'
         }
     }
     relationship_tables = {
