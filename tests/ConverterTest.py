@@ -40,5 +40,5 @@ class ConverterTest(unittest.TestCase):
                    + "\n" \
                    + "CREATE (5041:VORLESUNGEN {VorlNr: 5041, Titel: 'Ethik', SWS: 4, gelesenVon: 2125})" \
                    + "\n" \
-                   + "CREATE () - [] -> ()"
+                   + "CREATE () - [:VORAUSSETZEN] -> ()"
         self.assertEqual(expected, result)

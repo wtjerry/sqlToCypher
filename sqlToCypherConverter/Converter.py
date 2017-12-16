@@ -23,11 +23,12 @@ class Converter(object):
         for sql_statement in sql_statements:
             if self._is_insertInto(sql_statement):
                 if self._should_convert_to_node(sql_statement, tables_to_convert_to_nodes.keys()):
-                    cypher_statement = InsertIntoStatementConverter()\
-                        .to_cypher(sql_statement, tables_to_convert_to_nodes)
+                    cypher_statement = InsertIntoStatementConverter().to_node(sql_statement, tables_to_convert_to_nodes)
                     cypher_statements.append(cypher_statement)
                 elif any(x in sql_statement for x in relationship_tables.keys()):
-                    cypher_statements.append("CREATE () - [] -> ()")
+                    cypher_statement = InsertIntoStatementConverter()\
+                        .to_relationship(sql_statement, relationship_tables)
+                    cypher_statements.append(cypher_statement)
 
         return cypher_statements
 
