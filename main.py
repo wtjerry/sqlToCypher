@@ -18,9 +18,9 @@ if __name__ == "__main__":
     }
     special_relationship_tables = {
         'vorlesungen': {
-            'from': "VorlNr",
-            'to': "gelesenVon",
-            'name': "gelesenVon"
+            'from': "gelesenVon",
+            'to': "VorlNr",
+            'name': "liest"
         }
     }
     print(Converter().convert(
