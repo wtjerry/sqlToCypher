@@ -7,8 +7,10 @@ class InsertIntoStatementConverter(object):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
         columns = extractor.extract_columns()
-        identifier = self._get_identifier_name(table_name, tables_to_convert)
-        cypher_statement = self._create_node_statement(table_name, identifier, columns)
+        node_config = tables_to_convert[table_name]
+        identifier = node_config['id_attribute']
+        node_name = node_config['name']
+        cypher_statement = self._create_node_statement(node_name, identifier, columns)
         return cypher_statement
 
     def to_relationship(self, sql_statement, relationship_tables):
@@ -23,7 +25,7 @@ class InsertIntoStatementConverter(object):
         return cypher_statement
 
     def _get_identifier_name(self, table_name, tables_to_convert):
-        return tables_to_convert[table_name]
+        return tables_to_convert[table_name]['id_attribute']
 
     def _create_node_statement(self, table_name, identifier_name, columns):
         formatted_columns = []

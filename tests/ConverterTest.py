@@ -10,22 +10,29 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_convert_existingTableProvided_convertsThatTable(self):
-        tables_to_converttables_to_convert_to_nodes = {'studenten': "MatrNr"}
-        result = Converter().convert(
-            "./../resources/insertInto.sql",
-            tables_to_converttables_to_convert_to_nodes,
-            {},
-            {})
-        expected = "CREATE (_24002:STUDENTEN {MatrNr: 24002, Name: 'Xenokrates', Semester: 18})"
+        tables_to_convert_to_nodes = {
+            'studenten': {
+                'id_attribute': "MatrNr",
+                'name': 'student'
+            }
+        }
+        result = Converter().convert("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {})
+        expected = "CREATE (_24002:STUDENT {MatrNr: 24002, Name: 'Xenokrates', Semester: 18})"
         self.assertEqual(expected, result)
 
     def test_convert_notExistingTableProvided_returnsNothing(self):
-        result = Converter().convert("./../resources/insertInto.sql", {'professoren': "PersNr"}, {}, {})
+        tables_to_convert_to_nodes = {'professoren': {}}
+        result = Converter().convert("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {})
         expected = ""
         self.assertEqual(expected, result)
 
     def test_convert_existingTableANDrelationshipTableProvided_convertsTableWithRelationship(self):
-        tables_to_convert_to_nodes = {'vorlesungen': "VorlNr"}
+        tables_to_convert_to_nodes = {
+            'vorlesungen': {
+                'id_attribute': "VorlNr",
+                'name': 'vorlesungen'
+            }
+        }
         relationship_tables = {
             'voraussetzen': {
                 'from': "Nachfolger",
@@ -45,8 +52,13 @@ class ConverterTest(unittest.TestCase):
                    + "CREATE (_5041) - [:SETZT_VORAUS] -> (_5001)"
         self.assertEqual(expected, result)
 
-    def test_convert_existingTableANDspecialRelationshipTableProvided_dummyRelationship(self):
-        tables_to_convert_to_nodes = {'vorlesungen': "VorlNr"}
+    def test_convert_existingTableANDspecialRelationshipTableProvided_convertsTableWithRelationship(self):
+        tables_to_convert_to_nodes = {
+            'vorlesungen': {
+                'id_attribute': "VorlNr",
+                'name': 'vorlesungen'
+            }
+        }
         special_relationship_tables = {
             'vorlesungen': {
                 'from': "VorlNr",
