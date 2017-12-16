@@ -31,7 +31,8 @@ if __name__ == "__main__":
         'vorlesungen': {
             'from': "gelesenVon",
             'to': "VorlNr",
-            'name': "liest"
+            'name': "liest",
+            'attribute_to_ignore_for_conversion': "gelesenVon"
         }
     }
     print(Converter().convert(

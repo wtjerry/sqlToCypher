@@ -3,13 +3,16 @@ from sqlToCypherConverter.Extractor import Extractor
 
 class InsertIntoStatementConverter(object):
 
-    def to_node(self, sql_statement, tables_to_convert):
+    def to_node(self, sql_statement, tables_to_convert, special_relationship_table):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
         columns = extractor.extract_columns()
+
+        columns = self._drop_ignored_columns(columns, special_relationship_table, table_name)
         node_config = tables_to_convert[table_name]
         identifier = node_config['id_attribute']
         node_name = node_config['name']
+
         cypher_statement = self._create_node_statement(node_name, identifier, columns)
         return cypher_statement
 
@@ -17,15 +20,20 @@ class InsertIntoStatementConverter(object):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
         columns = extractor.extract_columns()
+
         rel = relationship_tables[table_name]
         relationship_name = rel['name']
         from_node_id = columns[rel['from']]
         to_node_id = columns[rel['to']]
+
         cypher_statement = self._create_relationship_statement(relationship_name, from_node_id, to_node_id)
         return cypher_statement
 
-    def _get_identifier_name(self, table_name, tables_to_convert):
-        return tables_to_convert[table_name]['id_attribute']
+    def _drop_ignored_columns(self, columns, special_relationship_table, table_name):
+        if table_name in special_relationship_table.keys():
+            config = special_relationship_table[table_name]['attribute_to_ignore_for_conversion']
+            columns.pop(config)
+        return columns
 
     def _create_node_statement(self, table_name, identifier_name, columns):
         formatted_columns = []

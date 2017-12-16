@@ -37,7 +37,7 @@ class ConverterTest(unittest.TestCase):
             'voraussetzen': {
                 'from': "Nachfolger",
                 'to': "Vorgänger",
-                'name': "setzt_voraus"
+                'name': "SETZT_VORAUS"
             }
         }
         result = Converter().convert(
@@ -63,7 +63,8 @@ class ConverterTest(unittest.TestCase):
             'vorlesungen': {
                 'from': "VorlNr",
                 'to': "gelesenVon",
-                'name': "gelesenVon"
+                'name': "GELESEN_VON",
+                'attribute_to_ignore_for_conversion': "gelesenVon"
             }
         }
         result = Converter().convert(
@@ -71,7 +72,7 @@ class ConverterTest(unittest.TestCase):
             tables_to_convert_to_nodes,
             {},
             special_relationship_tables)
-        expected = "CREATE (_5001:Vorlesungen {vorlnr: 5001, titel: 'Grundzuege', sws: 4, gelesenvon: 2137})" \
+        expected = "CREATE (_5001:Vorlesungen {vorlnr: 5001, titel: 'Grundzuege', sws: 4})" \
                    + "\n" \
-                   + "CREATE (_5001) - [:GELESENVON] -> (_2137)"
+                   + "CREATE (_5001) - [:GELESEN_VON] -> (_2137)"
         self.assertEqual(expected, result)
