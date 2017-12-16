@@ -20,18 +20,12 @@ class ConverterTest(unittest.TestCase):
         expected = ""
         self.assertEqual(expected, result)
 
-    def test_convert_existingTableANDrelationshipTableProvided_convertsTableWithDummyRelationship(self):
+    def test_convert_existingTableANDrelationshipTableProvided_convertsTableWithRelationship(self):
         tables_to_convert_to_nodes = {'vorlesungen': "VorlNr"}
         relationship_tables = {
             'voraussetzen': {
-                'from': {
-                    'attribute_name': "Nachfolger",
-                    'table_name': "vorlesungen"
-                },
-                'to': {
-                    'attribute_name': "Vorgänger",
-                    'table_name': "vorlesungen"
-                }
+                'from': "Nachfolger",
+                'to': "Vorgänger"
             }
         }
         result = Converter()\
@@ -40,5 +34,5 @@ class ConverterTest(unittest.TestCase):
                    + "\n" \
                    + "CREATE (5041:VORLESUNGEN {VorlNr: 5041, Titel: 'Ethik', SWS: 4, gelesenVon: 2125})" \
                    + "\n" \
-                   + "CREATE () - [:VORAUSSETZEN] -> ()"
+                   + "CREATE (5041) - [:VORAUSSETZEN] -> (5001)"
         self.assertEqual(expected, result)

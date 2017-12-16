@@ -7,4 +7,4 @@ if __name__ == "__main__":
         'assistenten': "PersNr",
         'vorlesungen': "VorlNr",
     }
-    print(Converter().convert("./resources/05 uni-daten.sql", tables_to_convert))
+    print(Converter().convert("./resources/05 uni-daten.sql", tables_to_convert, {}))

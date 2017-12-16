@@ -14,7 +14,11 @@ class InsertIntoStatementConverter(object):
     def to_relationship(self, sql_statement, relationship_tables):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
-        cypher_statement = self._create_relationship_statement(table_name)
+        columns = extractor.extract_columns()
+        rel = relationship_tables[table_name]
+        from_node_id = columns[rel['from']]
+        to_node_id = columns[rel['to']]
+        cypher_statement = self._create_relationship_statement(table_name, from_node_id, to_node_id)
         return cypher_statement
 
     def _get_identifier_name(self, table_name, tables_to_convert):
@@ -33,7 +37,5 @@ class InsertIntoStatementConverter(object):
         columns_string = ", ".join(formatted_columns)
         return "CREATE ({0}:{1} {{{2}}})".format(identifier_value, table_name.upper(), columns_string)
 
-    def _create_relationship_statement(self, table_name):
-        from_node = ""
-        to_node = ""
-        return "CREATE ({0}) - [:{1}] -> ({2})".format(from_node, table_name.upper(), to_node)
+    def _create_relationship_statement(self, table_name, from_node_id, to_node_id):
+        return "CREATE ({0}) - [:{1}] -> ({2})".format(from_node_id, table_name.upper(), to_node_id)
