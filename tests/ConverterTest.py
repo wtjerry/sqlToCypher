@@ -60,5 +60,5 @@ class ConverterTest(unittest.TestCase):
             special_relationship_tables)
         expected = "CREATE (_5001:VORLESUNGEN {VorlNr: 5001, Titel: 'Grundzuege', SWS: 4, gelesenVon: 2137})" \
                    + "\n" \
-                   + "CREATE (_) - [:] -> (_)"
+                   + "CREATE (_) - [:GELESENVON] -> (_)"
         self.assertEqual(expected, result)

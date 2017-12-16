@@ -22,7 +22,12 @@ class InsertIntoStatementConverter(object):
         return cypher_statement
 
     def to_special_relationship(self, sql_statement, special_relationship_tables):
-        return "CREATE (_) - [:] -> (_)"
+        extractor = Extractor(sql_statement)
+        table_name = extractor.extract_table()
+        rel = special_relationship_tables[table_name]
+        relationship_name = rel['name']
+        cypher_statement = self._create_relationship_statement(relationship_name, "", "")
+        return cypher_statement
 
     def _get_identifier_name(self, table_name, tables_to_convert):
         return tables_to_convert[table_name]
