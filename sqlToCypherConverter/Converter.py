@@ -4,11 +4,16 @@ from sqlToCypherConverter.constants import INSERT_INTO_STATEMENT
 
 class Converter(object):
 
-    def __init__(self, sql_file, tables_to_convert_to_nodes, relationship_tables, special_relationship_tables):
+    def __init__(
+            self,
+            sql_file,
+            tables_to_convert_to_nodes,
+            many_to_many_relationship_tables,
+            foreign_key_relationship_tables):
         self.sql_file = sql_file
         self.tables_to_convert_to_nodes = tables_to_convert_to_nodes
-        self.many_to_many_relationship_tables = relationship_tables
-        self.foreign_key_relationship_tables = special_relationship_tables
+        self.many_to_many_relationship_tables = many_to_many_relationship_tables
+        self.foreign_key_relationship_tables = foreign_key_relationship_tables
 
     def convert(self, ):
         with open(self.sql_file) as f:

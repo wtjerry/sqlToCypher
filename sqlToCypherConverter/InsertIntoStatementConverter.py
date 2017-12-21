@@ -3,12 +3,12 @@ from sqlToCypherConverter.Extractor import Extractor
 
 class InsertIntoStatementConverter(object):
 
-    def to_node(self, sql_statement, tables_to_convert, special_relationship_table):
+    def to_node(self, sql_statement, tables_to_convert, foreign_key_relationship_tables):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
         columns = extractor.extract_columns()
 
-        columns = self._drop_ignored_columns(columns, special_relationship_table, table_name)
+        columns = self._drop_ignored_columns(columns, foreign_key_relationship_tables, table_name)
         node_config = tables_to_convert[table_name]
         identifier = node_config['id_attribute']
         node_name = node_config['name']
@@ -16,12 +16,12 @@ class InsertIntoStatementConverter(object):
         cypher_statement = self._create_node_statement(node_name, identifier, columns)
         return cypher_statement
 
-    def to_relationship(self, sql_statement, relationship_tables):
+    def to_relationship(self, sql_statement, many_to_many_relationship_tables):
         extractor = Extractor(sql_statement)
         table_name = extractor.extract_table()
         columns = extractor.extract_columns()
 
-        rel = relationship_tables[table_name]
+        rel = many_to_many_relationship_tables[table_name]
         relationship_name = rel['name']
         from_node_id = columns[rel['from']]
         to_node_id = columns[rel['to']]
@@ -29,9 +29,9 @@ class InsertIntoStatementConverter(object):
         cypher_statement = self._create_relationship_statement(relationship_name, from_node_id, to_node_id)
         return cypher_statement
 
-    def _drop_ignored_columns(self, columns, special_relationship_table, table_name):
-        if table_name in special_relationship_table.keys():
-            config = special_relationship_table[table_name]['attribute_to_ignore_for_conversion']
+    def _drop_ignored_columns(self, columns, foreign_key_relationship_tables, table_name):
+        if table_name in foreign_key_relationship_tables.keys():
+            config = foreign_key_relationship_tables[table_name]['attribute_to_ignore_for_conversion']
             columns.pop(config)
         return columns
 

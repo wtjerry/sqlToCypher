@@ -15,7 +15,7 @@ if __name__ == "__main__":
             'name': 'Vorlesung'
         }
     }
-    relationship_tables = {
+    many_to_many_relationship_tables = {
         'voraussetzen': {
             'from': "Nachfolger",
             'to': "Vorgänger",
@@ -27,7 +27,7 @@ if __name__ == "__main__":
             'name': "hoert"
         }
     }
-    special_relationship_tables = {
+    foreign_key_relationship_tables = {
         'vorlesungen': {
             'from': "gelesenVon",
             'to': "VorlNr",
@@ -35,9 +35,10 @@ if __name__ == "__main__":
             'attribute_to_ignore_for_conversion': "gelesenVon"
         }
     }
-    print(Converter(
+
+    converter = Converter(
         "./resources/05 uni-daten.sql",
         tables_to_convert_to_nodes,
-        relationship_tables,
-        special_relationship_tables)
-        .convert())
+        many_to_many_relationship_tables,
+        foreign_key_relationship_tables)
+    print(converter.convert())
