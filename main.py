@@ -35,8 +35,9 @@ if __name__ == "__main__":
             'attribute_to_ignore_for_conversion': "gelesenVon"
         }
     }
-    print(Converter().convert(
+    print(Converter(
         "./resources/05 uni-daten.sql",
         tables_to_convert_to_nodes,
         relationship_tables,
-        special_relationship_tables))
+        special_relationship_tables)
+        .convert())

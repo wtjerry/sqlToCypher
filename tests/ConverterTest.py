@@ -5,7 +5,7 @@ from sqlToCypherConverter.Converter import Converter
 
 class ConverterTest(unittest.TestCase):
     def test_convert_noTablesProvided_returnsNothing(self):
-        result = Converter().convert("./../resources/insertInto.sql", {}, {}, {})
+        result = Converter("./../resources/insertInto.sql", {}, {}, {}).convert()
         expected = ""
         self.assertEqual(expected, result)
 
@@ -16,13 +16,13 @@ class ConverterTest(unittest.TestCase):
                 'name': 'Student'
             }
         }
-        result = Converter().convert("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {})
+        result = Converter("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {}).convert()
         expected = "CREATE (_24002:Student {matrnr: 24002, name: 'Xenokrates', semester: 18})"
         self.assertEqual(expected, result)
 
     def test_convert_notExistingTableProvided_returnsNothing(self):
         tables_to_convert_to_nodes = {'professoren': {}}
-        result = Converter().convert("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {})
+        result = Converter("./../resources/insertInto.sql", tables_to_convert_to_nodes, {}, {}).convert()
         expected = ""
         self.assertEqual(expected, result)
 
@@ -40,11 +40,12 @@ class ConverterTest(unittest.TestCase):
                 'name': "SETZT_VORAUS"
             }
         }
-        result = Converter().convert(
+        result = Converter(
             "./../resources/insertInto_with_relationshipTable.sql",
             tables_to_convert_to_nodes,
             relationship_tables,
-            {})
+            {})\
+            .convert()
         expected = "CREATE (_5001:Vorlesungen {vorlnr: 5001, titel: 'Grundzuege', sws: 4, gelesenvon: 2137})" \
                    + "\n" \
                    + "CREATE (_5041:Vorlesungen {vorlnr: 5041, titel: 'Ethik', sws: 4, gelesenvon: 2125})" \
@@ -67,11 +68,12 @@ class ConverterTest(unittest.TestCase):
                 'attribute_to_ignore_for_conversion': "gelesenVon"
             }
         }
-        result = Converter().convert(
+        result = Converter(
             "./../resources/insertInto_with_specialRelationship.sql",
             tables_to_convert_to_nodes,
             {},
-            special_relationship_tables)
+            special_relationship_tables)\
+            .convert()
         expected = "CREATE (_5001:Vorlesungen {vorlnr: 5001, titel: 'Grundzuege', sws: 4})" \
                    + "\n" \
                    + "CREATE (_5001) - [:GELESEN_VON] -> (_2137)"
