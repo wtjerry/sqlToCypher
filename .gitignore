@@ -7,3 +7,6 @@ __pycache__/
 
 # pycharm
 .idea/
+
+# documentation images
+doc_images/
